@@ -34,6 +34,7 @@ module "demo" {
   subnet_cidr_block = "10.100.0.0/24"
   availability_zone = var.az_us_east_1["a"] 
   map_public_ip_on_launch = true
+  route_table_name = "demo_public_route_table"
 }
 
 data aws_availability_zone "us-east-1a" {

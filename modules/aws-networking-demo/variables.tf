@@ -38,3 +38,8 @@ variable "subnet_name" {
   description = "Name assigned to the subnet"
   type = string
 }
+
+variable "route_table_name" {
+  description = "Name assigned to the route table"
+  type = string
+}
