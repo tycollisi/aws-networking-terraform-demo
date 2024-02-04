@@ -12,3 +12,29 @@ variable "vpc_name" {
   description = "Name assigned to the VPC"
   type = string
 }
+
+variable "igw_name" {
+  description = "Name assigned to the Internet Gateway"
+  type = string
+}
+
+variable "subnet_cidr_block" {
+  description = "The IPv4 CIDR block for the subnet." 
+  type = string
+}
+
+variable "availability_zone" {
+  description = "AZ of the subnet."
+  type = string
+}
+
+variable "map_public_ip_on_launch" {
+  description = "Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is false"
+  type = bool
+  default = false
+}
+
+variable "subnet_name" {
+  description = "Name assigned to the subnet"
+  type = string
+}
