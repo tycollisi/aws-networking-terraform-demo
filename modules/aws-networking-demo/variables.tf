@@ -18,28 +18,54 @@ variable "igw_name" {
   type = string
 }
 
-variable "subnet_cidr_block" {
-  description = "The IPv4 CIDR block for the subnet." 
-  type = string
+variable "public_subnets" {
+  description = "Each list of objects contains the configuration for a subnet. subnet_cidr_block: The IPv4 CIDR block for the subnet. availability_zone: The AZ of the subnet. map_public_ip_on_launch: Specify true to indicate that instances launched into the subnet should be assigned a public IP address."
+  type = list(object({
+    name = string
+    cidr_block = string
+    availability_zone = string
+    map_public_ip_on_launch = bool
+  }))
 }
 
-variable "availability_zone" {
-  description = "AZ of the subnet."
-  type = string
+variable "private_subnets" {
+  description = "Each list of objects contains the configuration for a subnet. subnet_cidr_block: The IPv4 CIDR block for the subnet. availability_zone: The AZ of the subnet. map_public_ip_on_launch: Specify true to indicate that instances launched into the subnet should be assigned a public IP address."
+  type = list(object({
+    name = string
+    cidr_block = string
+    availability_zone = string
+    map_public_ip_on_launch = bool
+  }))
 }
 
-variable "map_public_ip_on_launch" {
-  description = "Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is false"
-  type = bool
-  default = false
-}
+//variable "subnet_cidr_block" {
+//  description = "The IPv4 CIDR block for the subnet." 
+//  type = string
+//}
+//
+//variable "availability_zone" {
+//  description = "AZ of the subnet."
+//  type = string
+//}
+//
+//variable "map_public_ip_on_launch" {
+//  description = "Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is false"
+//  type = bool
+//  default = false
+//}
+//
+//variable "subnet_name" {
+//  description = "Name assigned to the subnet"
+//  type = string
+//}
 
-variable "subnet_name" {
-  description = "Name assigned to the subnet"
-  type = string
-}
-
-variable "route_table_name" {
+variable "public_route_table_name" {
   description = "Name assigned to the route table"
   type = string
 }
+
+variable "private_route_table_name" {
+  description = "Name assigned to the route table"
+  type = string
+}
+

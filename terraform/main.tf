@@ -30,11 +30,24 @@ module "demo" {
   vpc_cidr_block = "10.100.0.0/16"
   vpc_instance_tenancy = "default"
   igw_name = "demo_igw"
-  subnet_name = "demo_public_a"
-  subnet_cidr_block = "10.100.0.0/24"
-  availability_zone = var.az_us_east_1["a"] 
-  map_public_ip_on_launch = true
-  route_table_name = "demo_public_route_table"
+  public_subnets = [ 
+  {
+    name = "demo_public_a"
+    cidr_block = "10.100.0.0/24"
+    availability_zone = var.az_us_east_1["a"]
+    map_public_ip_on_launch = true
+  }
+]
+  private_subnets = [ 
+  {
+    name = "demo_private_a"
+    cidr_block = "10.100.1.0/24"
+    availability_zone = var.az_us_east_1["a"]
+    map_public_ip_on_launch = false 
+  }
+]
+  public_route_table_name = "demo_public_route_table"
+  private_route_table_name = "demo_private_route_table"
 }
 
 data aws_availability_zone "us-east-1a" {
