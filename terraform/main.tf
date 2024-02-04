@@ -1,6 +1,6 @@
 provider "aws" {
-  region  = var.aws_region
-  profile = var.cli_profile
+  region  = "us-east-1" 
+  profile = "tcollisi"
   default_tags {
     tags = {
       environment     = var.environment
@@ -21,4 +21,11 @@ terraform {
     dynamodb_table       = "ty-terraform-statelock"
     workspace_key_prefix = "terraform-state"
   }
+}
+
+module "demo" {
+  source = "../modules/aws-networking-demo/"
+  vpc_name = "demo_vpc"
+  vpc_cidr_block = "10.100.0.0/16"
+  vpc_instance_tenancy = "default"
 }
