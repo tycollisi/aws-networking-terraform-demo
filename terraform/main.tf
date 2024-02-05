@@ -23,13 +23,44 @@ terraform {
   }
 }
 
+resource "aws_vpc" "main" {
+  cidr_block       = "10.100.0.0/16" 
+  instance_tenancy = "default" 
+
+  tags = {
+    Name = "demo_vpc" 
+  }
+}
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main.id 
+
+  tags = {
+    Name = "demo_igw" 
+  }
+}
+
+resource "aws_eip" "eip" {
+  domain   = "vpc"
+}
+
+resource "aws_nat_gateway" "gw" {
+  allocation_id = aws_eip.eip.id
+  subnet_id     = module.demo.public_subnet_ids[0]  
+
+  tags = {
+    Name = "demo_NAT_gateway" 
+  }
+
+  depends_on = [ aws_internet_gateway.gw ]
+
+}
+
 // Note to self: Look into terraforms cidrsubnet() function: https://developer.hashicorp.com/terraform/language/functions/cidrsubnet
 module "demo" {
   source = "../modules/aws-networking-demo/"
-  vpc_name = "demo_vpc"
-  vpc_cidr_block = "10.100.0.0/16"
-  vpc_instance_tenancy = "default"
-  igw_name = "demo_igw"
+  vpc_id = aws_vpc.main.id
+  igw_id = aws_internet_gateway.gw.id
   public_subnets = [ 
   {
     name = "demo_public_a"
@@ -48,6 +79,7 @@ module "demo" {
 ]
   public_route_table_name = "demo_public_route_table"
   private_route_table_name = "demo_private_route_table"
+  nat_gateway_id = aws_nat_gateway.gw.id 
 }
 
 data aws_availability_zone "us-east-1a" {
